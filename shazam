@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+import requests
+from collections import OrderedDict
+
+# List of ad blocker filter list URLs
+filter_list_urls = [
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters-2020.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters-2021.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters-2022.txt",
+    "https://easylist.to/easylist/easylist.txt",
+    "https://easylist.to/easylist/easyprivacy.txt",
+    "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt"
+    "https://secure.fanboy.co.nz/fanboy-annoyance.txt"
+    "https://filters.adtidy.org/extension/ublock/filters/14.txt"
+    "https://curben.gitlab.io/malware-filter/urlhaus-filter-online.txt"
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt"
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt"
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt"
+    "https://filters.adtidy.org/extension/ublock/filters/11.txt"
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt"
+    "https://easylist-downloads.adblockplus.org/antiadblockfilters.txt"
+    "https://easylist-downloads.adblockplus.org/antiadblockfilters.txt"
+    "https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt"
+    "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext"
+    "https://easylist.to/easylist/easyprivacy.txt"
+    "https://filters.adtidy.org/extension/ublock/filters/2_without_easylist.txt"
+    "https://easylist.to/easylist/easylist.txt"
+    "https://easylist-downloads.adblockplus.org/easylistgermany.txt"
+    "https://filters.adtidy.org/extension/ublock/filters/9.txt"
+    "https://filters.adtidy.org/extension/ublock/filters/9.txt"
+    "https://secure.fanboy.co.nz/fanboy-indian.txt"
+    "https://block.energized.pro/basic/formats/domains.txt"
+    "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware/AntiMalware.txt"
+]
+
+# Create an ordered dictionary to store the unique filter list entries
+filter_list = OrderedDict()
+
+# Iterate through the filter list URLs and add the entries to the dictionary
+for url in filter_list_urls:
+    response = requests.get(url)
+    for line in response.text.splitlines():
+        if line.startswith("!") or line.strip() == "":
+            continue
+        filter_list[line] = True
+
+# Write the filter list to a file
+with open("filters.txt", "w", encoding="utf-8") as f:
+    for entry in filter_list:
+        f.write(entry + "\n")
+
+print(f"Combined filter list saved to 'combined_filter_list.txt' with {len(filter_list)} entries.")
